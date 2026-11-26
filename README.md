@@ -24,6 +24,12 @@ Ini langkah sekali sahaja supaya kedua-dua orang melihat data yang sama:
 
 > Jika status menyebut **“Ada perubahan baharu — segar dahulu”**, seorang lagi baru menyimpan perubahan. Klik **Sambung Google Sheet** dan sambung semula URL untuk memuatkan data terkini sebelum menambah rekod seterusnya. Ini mengelakkan perubahan satu pihak menindih data pihak lain.
 
+## Kata laluan disimpan di akaun sendiri
+
+Selepas menampal `Code.gs`, buka **Project Settings** dalam Apps Script (ikon gear), pergi ke **Script properties**, lalu tambah property bernama `TABUNG_PASSWORD`. Nilainya ialah kata laluan pilihan awak. Jangan masukkan kata laluan itu dalam `Code.gs` atau dalam mana-mana sel Google Sheet.
+
+Deploy versi Web App baharu selepas kemas kini skrip. Pada peranti baru, pengguna perlu tampal URL Web App pada halaman login sekali sahaja, kemudian masukkan kata laluan. Kata laluan tidak lagi berada dalam kod GitHub; sesi tamat selepas kira-kira enam jam atau apabila pengguna log keluar.
+
 ## Gambar keluarga
 
 Tekan **Tukar gambar keluarga** pada Dashboard dan pilih gambar JPEG, PNG atau WebP. Gambar dikecilkan sebelum dimuat naik ke Google Drive pemilik Google Sheet, kemudian pautannya disimpan dalam `Settings` supaya ia muncul juga pada peranti kakak. Selepas kemas kini `Code.gs`, jalankan semula `setup` dan deploy versi Web App baharu supaya Google meminta kebenaran Google Drive sekali sahaja.

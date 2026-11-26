@@ -3,8 +3,12 @@
  * Ikut README.md sebelum deploy sebagai Web App.
  */
 const SHEETS = ['Contributions', 'Expenses', 'Loans'];
+const PASSWORD_KEY = 'TABUNG_PASSWORD';
+const SESSION_PREFIX = 'tabung-session-';
+const SESSION_SECONDS = 21600; // 6 jam
 
-function doGet() {
+function doGet(e) {
+  if (!hasSession_(e && e.parameter && e.parameter.token)) return json_({ ok: false, error: 'Sesi tidak sah atau telah tamat.' });
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const output = {
     contributions: readSheet_(ss, 'Contributions'),
@@ -16,7 +20,11 @@ function doGet() {
 }
 
 function doPost(e) {
-  const body = JSON.parse(e.postData.contents || '{}');
+  let body;
+  try { body = JSON.parse(e.postData.contents || '{}'); }
+  catch (error) { return json_({ ok: false, error: 'Permintaan tidak sah.' }); }
+  if (body.action === 'login') return login_(body.password);
+  if (!hasSession_(body.token)) return json_({ ok: false, error: 'Sesi tidak sah atau telah tamat.' });
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   if (body.action === 'uploadImage' && body.image) {
     const match = String(body.image).match(/^data:(image\/(?:jpeg|png|webp));base64,(.+)$/);
@@ -43,6 +51,19 @@ function doPost(e) {
     }
   }
   return json_({ ok: false, error: 'Permintaan tidak sah.' });
+}
+
+function login_(password) {
+  const expected = PropertiesService.getScriptProperties().getProperty(PASSWORD_KEY);
+  if (!expected) return json_({ ok: false, error: 'Kata laluan belum ditetapkan oleh pemilik sistem.' });
+  if (!password || password !== expected) return json_({ ok: false, error: 'Kata laluan tidak tepat.' });
+  const token = Utilities.getUuid() + Utilities.getUuid();
+  CacheService.getScriptCache().put(SESSION_PREFIX + token, 'active', SESSION_SECONDS);
+  return json_({ ok: true, token: token, expiresIn: SESSION_SECONDS });
+}
+
+function hasSession_(token) {
+  return !!token && CacheService.getScriptCache().get(SESSION_PREFIX + token) === 'active';
 }
 
 function setup() {
