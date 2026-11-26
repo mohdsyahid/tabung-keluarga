@@ -81,7 +81,7 @@ function writeAll_(ss, data) {
   const settings = setupSettings_(ss);
   settings.clearContents();
   settings.appendRow(['key', 'value']);
-  settings.appendRow(['data', JSON.stringify({ startingBalances: data.startingBalances || {}, members: data.members || [], familyImage: data.familyImage || '', revision: revision })]);
+  settings.appendRow(['data', JSON.stringify({ startingBalances: data.startingBalances || {}, members: data.members || [], familyImage: data.familyImage || '', familyPhotos: data.familyPhotos || [], revision: revision })]);
   settings.setFrozenRows(1);
   return revision;
 }
