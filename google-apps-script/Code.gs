@@ -18,6 +18,14 @@ function doGet() {
 function doPost(e) {
   const body = JSON.parse(e.postData.contents || '{}');
   const ss = SpreadsheetApp.getActiveSpreadsheet();
+  if (body.action === 'uploadImage' && body.image) {
+    const match = String(body.image).match(/^data:(image\/(?:jpeg|png|webp));base64,(.+)$/);
+    if (!match) return json_({ ok: false, error: 'Format gambar tidak sah.' });
+    const extension = match[1] === 'image/png' ? 'png' : match[1] === 'image/webp' ? 'webp' : 'jpg';
+    const file = DriveApp.createFile(Utilities.newBlob(Utilities.base64Decode(match[2]), match[1], 'tabung-keluarga-' + new Date().getTime() + '.' + extension));
+    file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+    return json_({ ok: true, url: 'https://drive.google.com/uc?export=view&id=' + file.getId() });
+  }
   if (body.action === 'replaceAll' && body.data) {
     const lock = LockService.getScriptLock();
     try {
@@ -73,7 +81,7 @@ function writeAll_(ss, data) {
   const settings = setupSettings_(ss);
   settings.clearContents();
   settings.appendRow(['key', 'value']);
-  settings.appendRow(['data', JSON.stringify({ startingBalances: data.startingBalances || {}, members: data.members || [], revision: revision })]);
+  settings.appendRow(['data', JSON.stringify({ startingBalances: data.startingBalances || {}, members: data.members || [], familyImage: data.familyImage || '', revision: revision })]);
   settings.setFrozenRows(1);
   return revision;
 }

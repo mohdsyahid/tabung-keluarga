@@ -24,6 +24,10 @@ Ini langkah sekali sahaja supaya kedua-dua orang melihat data yang sama:
 
 > Jika status menyebut **“Ada perubahan baharu — segar dahulu”**, seorang lagi baru menyimpan perubahan. Klik **Sambung Google Sheet** dan sambung semula URL untuk memuatkan data terkini sebelum menambah rekod seterusnya. Ini mengelakkan perubahan satu pihak menindih data pihak lain.
 
+## Gambar keluarga
+
+Tekan **Tukar gambar keluarga** pada Dashboard dan pilih gambar JPEG, PNG atau WebP. Gambar dikecilkan sebelum dimuat naik ke Google Drive pemilik Google Sheet, kemudian pautannya disimpan dalam `Settings` supaya ia muncul juga pada peranti kakak. Selepas kemas kini `Code.gs`, jalankan semula `setup` dan deploy versi Web App baharu supaya Google meminta kebenaran Google Drive sekali sahaja.
+
 ## Import fail lama
 
 Pada menu **Arkib Rekod Tahun**, klik **Import Excel / CSV**. Format Excel kutipan yang sama seperti fail lama akan dibaca mengikut nama bulan. Semak hasil import sebelum menggunakannya sebagai rekod rasmi supaya tiada rekod berganda.
