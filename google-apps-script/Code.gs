@@ -24,7 +24,7 @@ function doPost(e) {
     const extension = match[1] === 'image/png' ? 'png' : match[1] === 'image/webp' ? 'webp' : 'jpg';
     const file = DriveApp.createFile(Utilities.newBlob(Utilities.base64Decode(match[2]), match[1], 'tabung-keluarga-' + new Date().getTime() + '.' + extension));
     file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
-    return json_({ ok: true, url: 'https://drive.google.com/uc?export=view&id=' + file.getId() });
+    return json_({ ok: true, url: 'https://drive.google.com/thumbnail?id=' + file.getId() + '&sz=w1600' });
   }
   if (body.action === 'replaceAll' && body.data) {
     const lock = LockService.getScriptLock();
