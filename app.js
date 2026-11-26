@@ -14,7 +14,7 @@ const legacy2021Loans=[
   {id:'seed-l-4',date:'2021-03-01',person:'Ami',purpose:'Repair kereta',principal:700,paid:500,status:'Aktif',note:'Akan buat bayaran balik RM100/bulan, bermula Ogos 2021'},
   {id:'seed-l-5',date:'2021-03-01',person:'Keluarga',purpose:'Beli kipas & exhaust fan',principal:600,paid:350,status:'Aktif',note:'RM250 guna duit tabung; RM350 telah dibayar pada 10/09/2021'}
 ];
-function migrateLegacy2021(){let changed=false;for(const record of legacy2021Expenses)if(!data.expenses.some(r=>r.id===record.id||r.item===record.item)){data.expenses.push(structuredClone(record));changed=true}for(const record of legacy2021Loans)if(!data.loans.some(r=>r.id===record.id||r.person===record.person&&r.purpose===record.purpose)){data.loans.push(structuredClone(record));changed=true}if(data.schemaVersion!==2){data.schemaVersion=2;changed=true}return changed}
+function migrateLegacy2021(){let changed=false;for(const record of legacy2021Expenses)if(!data.expenses.some(r=>r.id===record.id||r.item===record.item)){data.expenses.push(structuredClone(record));changed=true}for(const record of legacy2021Loans)if(!data.loans.some(r=>r.id===record.id||r.person===record.person&&r.purpose===record.purpose)){data.loans.push(structuredClone(record));changed=true}if(changed)data.schemaVersion=2;return changed}
 let activeYear = Number(localStorage.getItem('tabung-year')) || 2021;
 let entryType = 'contribution';let familySliderTimer;
 const $ = s => document.querySelector(s); const $$ = s => [...document.querySelectorAll(s)];
