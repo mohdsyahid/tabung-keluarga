@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ms">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0f332c" />
+    <title>Tabung Keluarga</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <section class="login-screen" id="loginScreen" aria-labelledby="loginTitle">
+      <form class="login-card" id="loginForm">
+        <span class="login-mark">TK</span>
+        <p>Tabung Keluarga</p>
+        <h1 id="loginTitle">Ruang rujukan keluarga</h1>
+        <p class="login-copy">Masukkan kata laluan untuk melihat rekod kutipan, belanja dan pinjaman keluarga.</p>
+        <label class="field-label">Kata laluan<input id="passwordInput" type="password" autocomplete="current-password" required autofocus /></label>
+        <p class="login-error hidden" id="loginError" role="alert">Kata laluan tidak tepat. Cuba sekali lagi.</p>
+        <button class="primary-button login-button" type="submit">Masuk ke sistem <svg><use href="#i-arrow" /></svg></button>
+      </form>
+    </section>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="#dashboard"><span class="brand-mark">TK</span><span>Tabung<br />Keluarga</span></a>
+        <nav aria-label="Navigasi utama">
+          <a class="nav-link active" href="#dashboard" data-view="dashboard"><svg><use href="#i-grid" /></svg>Ringkasan</a>
+          <a class="nav-link" href="#sumbangan" data-view="sumbangan"><svg><use href="#i-wallet" /></svg>Sumbangan</a>
+          <a class="nav-link" href="#perbelanjaan" data-view="perbelanjaan"><svg><use href="#i-receipt" /></svg>Perbelanjaan</a>
+          <a class="nav-link" href="#pinjaman" data-view="pinjaman"><svg><use href="#i-hand" /></svg>Pinjaman</a>
+          <a class="nav-link" href="#rekod" data-view="rekod"><svg><use href="#i-archive" /></svg>Rekod Tahun</a>
+        </nav>
+        <div class="side-footer">
+          <button class="text-button" id="syncButton"><svg><use href="#i-cloud" /></svg>Sambung Google Sheet</button>
+          <p><span class="online-dot"></span><span id="syncState">Disimpan pada peranti ini</span></p>
+        </div>
+      </aside>
+
+      <main>
+        <header class="topbar">
+          <button class="menu-button" id="menuButton" aria-label="Buka menu"><svg><use href="#i-menu" /></svg></button>
+          <div><h1 id="pageTitle">Assalamualaikum, keluarga</h1></div>
+          <div class="top-actions"><label class="year-select">Tahun <select id="yearFilter" aria-label="Pilih tahun"></select></label><button class="avatar" aria-label="Profil keluarga">SK</button></div>
+        </header>
+
+        <section id="dashboard" class="view active-view">
+          <div class="welcome-panel"><div><p>Rekod keluarga, sentiasa tersusun.</p><h2>Semak kutipan, belanja dan baki<br />tanpa cari dalam fail lama.</h2></div><button class="primary-button" data-open-modal="contribution"><svg><use href="#i-plus" /></svg>Tambah kutipan</button></div>
+          <div class="stat-grid" id="statGrid"></div>
+          <div class="content-grid dashboard-grid">
+            <section class="panel cash-panel"><div class="panel-heading"><div><h3>Aliran kutipan</h3><p>Jumlah kutipan bulanan bagi tahun dipilih</p></div></div><div class="chart" id="contributionChart" aria-label="Carta kutipan bulanan"></div><div class="chart-key"><span><i class="key-dot"></i>Kutipan</span><span id="chartYear"></span></div></section>
+            <section class="panel activity-panel"><div class="panel-heading"><div><h3>Aktiviti terkini</h3><p>Rekod yang baru dikemas kini</p></div><button class="quiet-button" data-view-link="sumbangan">Lihat semua</button></div><div id="activityList" class="activity-list"></div></section>
+          </div>
+          <section class="panel attention-panel"><div class="panel-heading"><div><h3>Perlu perhatian</h3><p>Pinjaman dan bayaran yang masih terbuka</p></div><button class="quiet-button" data-view-link="pinjaman">Semak pinjaman</button></div><div id="attentionList" class="attention-list"></div></section>
+        </section>
+
+        <section id="sumbangan" class="view">
+          <div class="page-intro"><div><h2>Kutipan ahli keluarga</h2><p>Setiap bayaran direkod ikut bulan dan tahun. Rekod lama tidak dipadam.</p></div><button class="primary-button" data-open-modal="contribution"><svg><use href="#i-plus" /></svg>Tambah kutipan</button></div>
+          <div class="filter-row"><label class="search"><svg><use href="#i-search" /></svg><input id="contributionSearch" placeholder="Cari nama ahli keluarga" /></label><label class="control-label">Bulan<select id="monthFilter"><option value="all">Semua bulan</option></select></label><button class="secondary-button" id="exportButton"><svg><use href="#i-download" /></svg>Muat turun CSV</button></div>
+          <section class="panel table-panel"><div class="table-wrap"><table><thead><tr><th>Tarikh</th><th>Nama</th><th>Jumlah</th><th>Catatan</th><th>Status</th><th></th></tr></thead><tbody id="contributionRows"></tbody></table></div><div class="empty-state hidden" id="contributionEmpty">Belum ada kutipan untuk penapis ini.</div></section>
+        </section>
+
+        <section id="perbelanjaan" class="view">
+          <div class="page-intro"><div><h2>Perbelanjaan tabung</h2><p>Rekod semua duit keluar supaya baki dan tujuan sentiasa jelas.</p></div><button class="primary-button" data-open-modal="expense"><svg><use href="#i-plus" /></svg>Tambah belanja</button></div>
+          <section class="panel table-panel"><div class="table-wrap"><table><thead><tr><th>Tarikh</th><th>Perkara</th><th>Kategori</th><th>Jumlah</th><th>Status</th><th></th></tr></thead><tbody id="expenseRows"></tbody></table></div><div class="empty-state hidden" id="expenseEmpty">Belum ada perbelanjaan untuk tahun ini.</div></section>
+        </section>
+
+        <section id="pinjaman" class="view">
+          <div class="page-intro"><div><h2>Pinjaman keluarga</h2><p>Jejak baki dan status bayaran balik tanpa hilang rekod asal.</p></div><button class="primary-button" data-open-modal="loan"><svg><use href="#i-plus" /></svg>Tambah pinjaman</button></div><div class="loan-grid" id="loanCards"></div><div class="empty-state panel hidden" id="loanEmpty">Tiada pinjaman direkodkan untuk tahun ini.</div>
+        </section>
+
+        <section id="rekod" class="view">
+          <div class="page-intro"><div><h2>Arkib rekod mengikut tahun</h2><p>Ini bukan tong sampah. Semua rekod lama kekal untuk rujukan keluarga.</p></div><button class="secondary-button" id="importButton"><svg><use href="#i-upload" /></svg>Import Excel / CSV</button><input type="file" id="fileInput" accept=".xlsx,.xls,.csv" hidden /></div>
+          <div class="year-record-grid" id="yearRecords"></div>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="entryModal"><form method="dialog" id="entryForm"><div class="modal-top"><div><p class="section-label" id="modalLabel">Rekod baru</p><h2 id="modalTitle">Tambah kutipan</h2></div><button class="icon-button" value="cancel" aria-label="Tutup"><svg><use href="#i-close" /></svg></button></div><div id="formFields" class="form-fields"></div><div class="modal-actions"><button value="cancel" class="secondary-button">Batal</button><button id="saveEntry" value="default" class="primary-button">Simpan rekod</button></div></form></dialog>
+    <dialog id="syncModal"><form method="dialog"><div class="modal-top"><div><p class="section-label">Google Sheets</p><h2>Sambungkan data bersama</h2></div><button class="icon-button" value="cancel" aria-label="Tutup"><svg><use href="#i-close" /></svg></button></div><p class="modal-copy">Tampal URL Google Apps Script selepas ikut panduan dalam README. Lepas itu, rekod yang anda dan kakak tambah akan disimpan ke Google Sheet yang sama.</p><label class="field-label">URL Web App<input id="apiUrlInput" type="url" placeholder="https://script.google.com/macros/s/.../exec" /></label><div class="modal-actions"><button value="cancel" class="secondary-button">Batal</button><button id="saveApiUrl" value="default" class="primary-button">Sambung & segar semula</button></div></form></dialog>
+
+    <svg class="icon-sprite" aria-hidden="true"><symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol><symbol id="i-wallet" viewBox="0 0 24 24"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H19v14H5.5A2.5 2.5 0 0 1 3 16.5v-9Z"/><path d="M3 8h16v5h-4a2 2 0 1 0 0 4h4"/></symbol><symbol id="i-receipt" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3Z"/><path d="M9 8h6M9 12h6"/></symbol><symbol id="i-hand" viewBox="0 0 24 24"><path d="M8 12V6a1.5 1.5 0 0 1 3 0v5-7a1.5 1.5 0 0 1 3 0v7-5a1.5 1.5 0 0 1 3 0v6l1-2a1.8 1.8 0 0 1 3 1.5l-2 5A5 5 0 0 1 14.2 20H12a5 5 0 0 1-4-2l-3-4a1.8 1.8 0 0 1 2.7-2.4L8 12Z"/></symbol><symbol id="i-archive" viewBox="0 0 24 24"><path d="M3 5h18v4H3zM5 9h14v10H5z"/><path d="M9 13h6"/></symbol><symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18a4 4 0 1 1 .7-7.9A5.5 5.5 0 0 1 18 12a3 3 0 1 1-.5 6H7Z"/><path d="M12 9v7m-3-3 3 3 3-3"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol><symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M4 20h16"/></symbol><symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4m-4 4 4-4 4 4M4 20h16"/></symbol><symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol></svg>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script><script src="app.js"></script>
+  </body>
+</html>
